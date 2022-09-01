@@ -1,25 +1,33 @@
 <li class="nav-item">
-  <a class="nav-link" href="index.html">
+  <a class="nav-link" href="/">
     <i class="fas fa-fw fa-tachometer-alt"></i>
     <span>Dashboard</span>
   </a>
 </li>
 <hr class="sidebar-divider">
-<div class="sidebar-heading">
-  Interface
-</div>
+<li class="nav-item">
+  <a class="nav-link" href="/trx">
+    <i class="fas fa-fw fa-cash-register"></i>
+    <span>Transaction</span>
+  </a>
+</li>
 <li class="nav-item">
   <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
     aria-expanded="true" aria-controls="collapseTwo">
-  <i class="fas fa-fw fa-cog"></i>
-  <span>Components</span>
+  <i class="fas fa-fw fa-box"></i>
+  <span>Product</span>
   </a>
   <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-      <h6 class="collapse-header">Custom Components:</h6>
-      <a class="collapse-item" href="buttons.html">Buttons</a>
-      <a class="collapse-item" href="cards.html">Cards</a>
+      <a class="collapse-item" href="/product">Products</a>
+      <a class="collapse-item" href="/product/category">Categories</a>
     </div>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/voucher">
+    <i class="fas fa-fw fa-ticket-alt"></i>
+    <span>Voucher</span>
+  </a>
 </li>
   
