@@ -34,6 +34,20 @@
           @include('templates.header')
           
           <div class="container-fluid">
+            @if (\Session::get('error'))
+              <div class="alert alert-danger">
+                <i class="fas fa-times"></i> {!! \Session::get('error') !!}
+              </div>
+            @elseif(\Session::get('success'))
+              <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> {!! \Session::get('success') !!}
+              </div>
+            @elseif(\Session::get('info'))
+              <div class="alert alert-primary">
+                <i class="fas fa-info-circle"></i> {!! \Session::get('info') !!}
+              </div>
+            @endif
+            
             @yield('content')
           </div>
         </div>
