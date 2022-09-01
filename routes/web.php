@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,12 @@ Route::middleware('auth')->group(function(){
         return view('dashboard');
     });
 
+    Route::prefix('/product')->group(function(){
+        Route::prefix('/category')->group(function(){
+            Route::get('/',[ProductController::class, 'categoryList']);
+            Route::get('/form',[ProductController::class, 'categoryForm']);
+            Route::post('/form',[ProductController::class, 'categorySave']);
+            Route::get('/delete',[ProductController::class, 'categoryDelete']);
+        });
+    });
 });
