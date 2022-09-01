@@ -3,10 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 use App\Models\ProductCategory;
 
 class ProductController extends Controller
 {
+    public function productList()
+    {
+        $data = Product::with('category')->get();
+
+        return view('product.list', compact('data'));
+    }
+
+    public function productForm(Request $request)
+    {
+        $categories = ProductCategory::all();
+        $view = view('product.form', compact('categories'));
+
+        if($request->filled('id')) {
+            $data = Product::where('id',$request->id)->with('category')->first();
+            if(!$data) return redirect('/product');
+            $view = $view->with('data', $data);
+        }
+
+        return $view;
+    }
+
     public function categoryList()
     {
         $data = ProductCategory::all();

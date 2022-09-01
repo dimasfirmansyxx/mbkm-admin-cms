@@ -31,6 +31,11 @@ Route::middleware('auth')->group(function(){
     });
 
     Route::prefix('/product')->group(function(){
+        Route::get('/',[ProductController::class, 'productList']);
+        Route::get('/form',[ProductController::class, 'productForm']);
+        Route::post('/form',[ProductController::class, 'productSave']);
+        Route::get('/delete',[ProductController::class, 'productDelete']);
+
         Route::prefix('/category')->group(function(){
             Route::get('/',[ProductController::class, 'categoryList']);
             Route::get('/form',[ProductController::class, 'categoryForm']);
