@@ -20,4 +20,15 @@ class AuthController extends Controller
             return redirect('/auth/login')->with('error', $e->getMessage());
         }
     }
+
+    public function logout()
+    {
+        try {
+            \Auth::logout();
+
+            return redirect('auth/login');
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
 }
