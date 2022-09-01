@@ -10,6 +10,6 @@ class Product extends Model
     use HasFactory;
     protected $table = 'products';
 
-    public function category() { $this->belongsTo(ProductCategory::class, 'product_categories_id', 'id'); }
-    public function trxDetails() { $this->hasMany(TransactionDetail::class, 'transactions_id', 'id'); }
+    public function category() { return $this->belongsTo(ProductCategory::class, 'product_categories_id', 'id'); }
+    public function trxDetails() { return $this->hasMany(TransactionDetail::class, 'transactions_id', 'id'); }
 }

@@ -11,6 +11,6 @@ class Transaction extends Model
 
     protected $tables = 'transactions';
 
-    public function trxDetails() { $this->hasMany(TransactionDetail::class, 'transactions_id', 'id'); }
-    public function vocUsages() { $this->hasOne(VoucherUsage::class, 'transactions_id', 'id'); }
+    public function trxDetails() { return $this->hasMany(TransactionDetail::class, 'transactions_id', 'id'); }
+    public function vocUsages() { return $this->hasOne(VoucherUsage::class, 'transactions_id', 'id'); }
 }

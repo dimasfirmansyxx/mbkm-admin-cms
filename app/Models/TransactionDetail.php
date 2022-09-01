@@ -11,6 +11,6 @@ class TransactionDetail extends Model
 
     protected $table = 'transaction_details';
 
-    public function product() { $this->belongsTo(Product::class, 'products_id', 'id'); }
-    public function trx() { $this->belongsTo(Transaction::class, 'transactions_id', 'id'); }
+    public function product() { return $this->belongsTo(Product::class, 'products_id', 'id'); }
+    public function trx() { return $this->belongsTo(Transaction::class, 'transactions_id', 'id'); }
 }

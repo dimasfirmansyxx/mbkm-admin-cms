@@ -11,6 +11,6 @@ class VoucherUsage extends Model
 
     protected $table = 'voucher_usages';
 
-    public function voucher() { $this->belongsTo(Voucher::class, 'vouchers_id', 'id'); }
-    public function trx() { $this->belongsTo(Transaction::class, 'transactions_id', 'id'); }
+    public function voucher() { return $this->belongsTo(Voucher::class, 'vouchers_id', 'id'); }
+    public function trx() { return $this->belongsTo(Transaction::class, 'transactions_id', 'id'); }
 }

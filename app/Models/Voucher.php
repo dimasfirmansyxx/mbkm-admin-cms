@@ -11,5 +11,5 @@ class Voucher extends Model
 
     protected $table = 'vouchers';
 
-    public function vocUsage() { $this->hasOne(VoucherUsage::class, 'vouchers_id', 'id'); }
+    public function vocUsage() { return $this->hasOne(VoucherUsage::class, 'vouchers_id', 'id'); }
 }
