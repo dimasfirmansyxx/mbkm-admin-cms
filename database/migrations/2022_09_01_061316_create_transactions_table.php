@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code', 50);
-            $table->string('customer_name', 200)->nullable();
-            $table->string('customer_email', 100)->nullable();
+            $table->string('customer_name', 200);
+            $table->string('customer_email', 100);
             $table->string('customer_phone', 45)->nullable();
             $table->decimal('subtotal', 18, 2)->default(0);
             $table->decimal('total', 18, 2)->default(0);
