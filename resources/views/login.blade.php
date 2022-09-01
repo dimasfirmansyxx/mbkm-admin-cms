@@ -27,12 +27,17 @@
                     <div class="text-center">
                       <h1 class="h4 text-gray-900 mb-4">Welcome!</h1>
                     </div>
-                    <form class="user">
+                    @if (\Session::get('error'))
+                      <div class="alert alert-danger">
+                        <b>Login Failed!</b> {{ \Session::get('error') }}
+                      </div>
+                    @endif
+                    <form class="user" method="post" action="">
                       <div class="form-group">
-                        <input type="text" class="form-control form-control-user" placeholder="Username">
+                        <input type="text" class="form-control form-control-user" name="username" placeholder="Username" required autocomplete="off" autofocus>
                       </div>
                       <div class="form-group">
-                        <input type="password" class="form-control form-control-user" placeholder="Password">
+                        <input type="password" class="form-control form-control-user" name="password" placeholder="Password" required autocomplete="off">
                       </div>
                       <button class="btn btn-primary btn-block btn-user">Login</button>
                     </form>
