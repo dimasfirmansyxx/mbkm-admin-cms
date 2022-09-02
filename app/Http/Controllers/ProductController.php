@@ -53,6 +53,8 @@ class ProductController extends Controller
     {
         \DB::beginTransaction();
         try {
+            if(!$request->filled('category')) throw new \Exception('Category field must be filled');
+
             if($request->filled('id')) $category = ProductCategory::where('id',$request->id)->first();
             else $category = new ProductCategory;
     
