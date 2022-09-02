@@ -9,6 +9,24 @@
     <a href="/product/form" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
   </div>
   <div class="card-body">
+    <form action="" method="get" class="row">
+      <div class="form-group col">
+        <input type="text" class="form-control" placeholder="Product Name" name="name" autocomplete="off" value="{{ (request()->get('name')) ? request()->get('name') : '' }}">
+      </div>
+      <div class="form-group col">
+        <input type="text" class="form-control" placeholder="Product Code" name="code" autocomplete="off" value="{{ (request()->get('code')) ? request()->get('code') : '' }}">
+      </div>
+      <div class="form-group col">
+        <select name="status" class="form-control">
+          <option value="null">--- Status ---</option>
+          <option value="active" {{ (request()->get('status') && request()->get('status') == 'active') ? 'selected' : '' }}>Active</option>
+          <option value="nonactive" {{ (request()->get('status') && request()->get('status') == 'nonactive') ? 'selected' : '' }}>Nonactive</option>
+        </select>
+      </div>
+      <div class="col text-right">
+        <button class="btn btn-secondary" type="submit"><i class="fas fa-search"></i> Search</button>
+      </div>
+    </form>
     <table class="table table-bordered table-hover table-striped">
       <thead>
         <tr class="text-center">

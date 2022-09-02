@@ -8,9 +8,18 @@ use App\Models\ProductCategory;
 
 class ProductController extends Controller
 {
-    public function productList()
+    public function productList(Request $request)
     {
-        $data = Product::with('category')->get();
+        $data = Product::with('category');
+
+        if($request->filled('name')) $data = $data->where('name','LIKE','%'.$request->name.'%');
+        if($request->filled('code')) $data = $data->where('code',$request->code);
+        if($request->filled('status')) {
+            if($request->status == 'active') $data = $data->where('status', 1);
+            elseif($request->status == 'nonactive') $data = $data->where('status', 0);
+        }
+
+        $data = $data->get();
 
         return view('product.list', compact('data'));
     }
