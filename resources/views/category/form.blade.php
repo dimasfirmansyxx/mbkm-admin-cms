@@ -13,7 +13,7 @@
   <div class="card-body">
     <form action="" method="post">
       <div class="form-group">
-        <label>Category</label>
+        <label>Category <span class="text-danger">*</span></label>
         <input type="text" class="form-control" required name="category" autocomplete="off" value="{{ (isset($data)) ? $data->category : '' }}">
       </div>
       <div class="form-group">
