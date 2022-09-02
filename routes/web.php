@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,5 +51,12 @@ Route::middleware('auth')->group(function(){
         Route::get('/form',[VoucherController::class, 'form']);
         Route::post('/form',[VoucherController::class, 'save']);
         Route::get('/delete',[VoucherController::class, 'delete']);
+    });
+
+    Route::prefix('/trx')->group(function(){
+        Route::get('/',[TransactionController::class, 'list']);
+        Route::get('/create',[TransactionController::class, 'create']);
+        Route::get('/product/{id}',[TransactionController::class, 'getProduct']);
+        Route::post('/voucher',[TransactionController::class, 'claimVoucher']);
     });
 });

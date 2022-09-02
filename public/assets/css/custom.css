@@ -1,0 +1,41 @@
+.floating-button {
+    position: fixed;
+    right: 0;
+    margin-right: 15px;
+}
+
+.transaction-page .card .card-body { padding: 10px 0; }
+
+.transaction-page .table-cart {
+    min-height: 500px;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.transaction-page .table-cart table { width: 100%; }
+.transaction-page .table-cart table thead { 
+    background-color: #5a5c69;
+    color: #fff;
+}
+.transaction-page .table-cart table tbody tr:nth-child(even) { background-color: rgb(233, 233, 233); }
+.transaction-page .table-cart button.badge { border: none; }
+
+.transaction-page .table-total table { width: 100%; }
+.transaction-page .table-total table tr:first-child, 
+.transaction-page .table-total table tr:nth-child(2) { background-color: rgb(233, 233, 233); }
+.transaction-page .table-total table tr:last-child { 
+    background-color: rgb(90, 90, 90); 
+    color: #fff;
+    font-weight: 700;
+}
+
+.transaction-page .product-list {
+    min-height: 600px;
+    max-height: 600px;
+}
+.transaction-page .product-list .category-section {
+    white-space: nowrap;
+    overflow-x: auto;
+}
+.transaction-page .product-list .product-section .product-item { cursor: pointer; }
+.transaction-page .product-list .product-section .product-item:hover { background-color: rgb(233, 233, 233); }
