@@ -35,7 +35,7 @@
               <td>{!! ($row->status) ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Non Active</span>' !!}</td>
               <td width="100">
                 <a href="/product/form?id={{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
-                <a href="/product/delete?id={{ $row->id }}" onclick="return confirm('Are you sure want to delete this category?')" class="btn btn-danger btn-sm btn-icon"><i class="fas fa-trash"></i></a>
+                <a href="/product/delete?id={{ $row->id }}" onclick="return confirm('Are you sure want to delete this product?')" class="btn btn-danger btn-sm btn-icon"><i class="fas fa-trash"></i></a>
               </td>
             </tr>
           @endforeach

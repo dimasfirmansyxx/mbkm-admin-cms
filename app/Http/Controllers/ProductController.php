@@ -29,6 +29,62 @@ class ProductController extends Controller
         return $view;
     }
 
+    public function productSave(Request $request)
+    {
+        \DB::beginTransaction();
+        try {
+            if(!$request->filled('name')) throw new \Exception('Name field must be filled');
+            if(!$request->filled('code')) throw new \Exception('Code field must be filled');
+            if(!$request->filled('product_categories_id') || $request->product_categories_id == '0') throw new \Exception('Category field must be filled');
+            if(!$request->filled('price') || $request->price < 1) throw new \Exception('Price field must be filled');
+            if(!$request->filled('purchase_price') || $request->purchase_price < 1) throw new \Exception('Purchase Price field must be filled');
+
+            if($request->filled('id')) $data = Product::where('id',$request->id)->first();
+            else $data = new Product;
+
+            if(!$data) return redirect('/product');
+
+            $data->name = $request->name;
+            $data->code = $request->code;
+            $data->product_categories_id = $request->product_categories_id;
+            $data->status = ($request->filled('status') && $request->status == 'true');
+            $data->price = $request->price;
+            $data->purchase_price = $request->purchase_price;
+            $data->short_description = $request->short_description;
+            $data->description = $request->description;
+            $data->new_product = ($request->filled('new_product') && $request->new_product == 'true');
+            $data->best_seller = ($request->filled('best_seller') && $request->best_seller == 'true');
+            $data->featured = ($request->filled('featured') && $request->featured == 'true');
+            $data->save();
+
+            \DB::commit();
+
+            return redirect('/product')->with('success','Product saved successfully');
+        } catch(\Exception $e) {
+            \DB::rollback();
+            return redirect()->back()->with('error',$e->getMessage());
+        }
+    }
+
+    public function productDelete(Request $request)
+    {
+        \DB::beginTransaction();
+        try {
+            if(!$request->filled('id')) return redirect()->back();
+
+            $product = Product::where('id',$request->id)->first();
+            if(!$product) throw new \Exception('ID not found');
+            $product->delete();
+
+            \DB::commit();
+
+            return redirect('/product')->with('success','Product deleted successfully');
+        } catch(\Exception $e) {
+            \DB::rollback();
+            return redirect()->back()->with('error',$e->getMessage());
+        }
+    }
+
     public function categoryList()
     {
         $data = ProductCategory::all();
