@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\VoucherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,5 +43,12 @@ Route::middleware('auth')->group(function(){
             Route::post('/form',[ProductController::class, 'categorySave']);
             Route::get('/delete',[ProductController::class, 'categoryDelete']);
         });
+    });
+
+    Route::prefix('/voucher')->group(function(){
+        Route::get('/',[VoucherController::class, 'list']);
+        Route::get('/form',[VoucherController::class, 'form']);
+        Route::post('/form',[VoucherController::class, 'save']);
+        Route::get('/delete',[VoucherController::class, 'delete']);
     });
 });
