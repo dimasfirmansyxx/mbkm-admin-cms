@@ -86,7 +86,6 @@ class TransactionController extends Controller
             return redirect('/trx')->with('success','Transaction created');
         } catch(\Exception $e) {
             \DB::rollback();
-            dd($e);
             return redirect()->back()->with('error',$e->getMessage());
         }
     }
