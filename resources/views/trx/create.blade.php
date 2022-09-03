@@ -359,6 +359,7 @@
           total: total,
           action: 'save'
         }
+        localStorage.removeItem('cart')
         $('#txtMaster').val(JSON.stringify(data))
         $('#frmMaster').submit()
       }
