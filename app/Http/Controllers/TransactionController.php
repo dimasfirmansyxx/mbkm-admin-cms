@@ -163,6 +163,25 @@ class TransactionController extends Controller
         }
     }
 
+    public function delete(Request $request)
+    {
+        \DB::beginTransaction();
+        try {
+            if(!$request->filled('id')) return redirect('/trx');
+
+            $transaction = Transaction::where('id',$request->id)->first();
+            if($transaction->status != 0) return redirect('/trx')->with('error','Status of transaction must be CANCELED');
+            if(!$transaction) return redirect('/trx');
+            $transaction->delete();
+
+            \DB::commit();
+            return redirect('/trx')->with('success','Transaction Deleted Successfully');
+        } catch(\Exception $e) {
+            \DB::rollback();
+            return redirect('/trx')->with('error',$e->getMessage());
+        }
+    }
+
     public function getProduct($id)
     {
         try {
