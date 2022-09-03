@@ -71,8 +71,8 @@
 <div class="floating-button">
   <button class="btn btn-danger btn-sm" id="btnCancel"><i class="fas fa-times"></i> Cancel</button>
   <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#mdlVoucher"><i class="fas fa-ticket-alt"></i> Voucher</button>
-  <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#mdlCustomer"><i class="fas fa-save"></i> Save</button>
-  <button class="btn btn-success btn-sm"><i class="fas fa-check"></i> Transaction Done</button>
+  <button class="btn btn-primary btn-sm" id="btnSaveTransaction"><i class="fas fa-save"></i> Save</button>
+  <button class="btn btn-success btn-sm" id="btnTransactionDone"><i class="fas fa-check"></i> Transaction Done</button>
 </div>
 
 <div class="modal fade" id="mdlSelectProduct" tabindex="-1" aria-hidden="true">
@@ -171,16 +171,23 @@
   </div>
 </div>
 
+<form action="" method="post" id="frmMaster" style="display: none">
+  <textarea id="txtMaster" name="data"></textarea>
+</form>
+
 <script>
   $(function(){
 
     const cart = (localStorage.getItem('cart') != undefined) ? JSON.parse(localStorage.getItem('cart')) : {}
     const total = {
       subtotal: 0,
-      discount: {type: 'flat', value: 0},
+      discount: {type: 'flat', value: 0, voucher: ''},
       total: 0,
     }
     let tmpCart = {}
+    let customer = {}
+
+    let action = null
 
     loadCart()
     function loadCart() {
@@ -211,8 +218,7 @@
       total.total = total.subtotal - discount
 
       let discountView = parseFloat(total.discount.value)
-      if(total.discount.type == 'percentage') discountView += `% (-${discount})`
-      else discountView = '-'+discountView
+      if(total.discount.type == 'percentage') discountView += `% (${discount})`
 
       $('#lblSubtotal').html(total.subtotal)
       $('#lblDiscount').html(discountView)
@@ -327,6 +333,44 @@
       tmpCart = cart[id]
       $('#mdlSelectProduct').modal('show')  
     })
+
+    $('#btnSaveTransaction').click(function(){
+      action = 'save'
+      $('#mdlCustomer').modal('show')
+    })
+
+    $('#frmCustomer').submit(function(e){
+      e.preventDefault()
+      customer = {
+        name: $('#txtCustName').val(),
+        email: $('#txtCustEmail').val(),
+        phone: $('#txtCustPhone').val(),
+        additional_request: $('#txtCustRequest').val(),
+      }
+      submitTransaction()
+    })
+
+    function submitTransaction() {
+      if(action == 'save'){
+        const items = cartReformat()
+        const data = {
+          items: items,
+          customer: customer,
+          total: total,
+          action: 'save'
+        }
+        $('#txtMaster').val(JSON.stringify(data))
+        $('#frmMaster').submit()
+      }
+
+    }
+
+    function cartReformat() {
+      const data = []
+      for(const index in cart) data.push(cart[index])
+
+      return data
+    }
 
   })
 </script>

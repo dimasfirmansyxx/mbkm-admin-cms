@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function(){
     Route::prefix('/trx')->group(function(){
         Route::get('/',[TransactionController::class, 'list']);
         Route::get('/create',[TransactionController::class, 'create']);
+        Route::post('/create',[TransactionController::class, 'createTrx']);
         Route::get('/product/{id}',[TransactionController::class, 'getProduct']);
         Route::post('/voucher',[TransactionController::class, 'claimVoucher']);
     });
