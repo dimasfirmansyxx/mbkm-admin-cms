@@ -46,7 +46,7 @@ class TransactionController extends Controller
             $trx->subtotal = $calculate->total->subtotal;
             $trx->total = $calculate->total->total;
             $trx->total_purchase = $calculate->total->purchase;
-            $trx->payment_method = (isset($request->customer->payment_method)) ? $request->customer->payment_method : 'Cash';
+            $trx->payment_method = $request->customer->payment_method;
             $trx->status = ($request->action == 'save') ? 1 : 2;
             $trx->save();
 

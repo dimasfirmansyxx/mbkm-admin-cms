@@ -159,6 +159,14 @@
             <input type="tel" class="form-control" autocomplete="off" id="txtCustPhone">
           </div>
           <div class="form-group col-12">
+            <label>Payment Method <span class="text-danger">*</span></label>
+            <select id="cmbPaymentMethod" class="form-control">
+              <option value="Cash">Cash</option>
+              <option value="Debit">Debit</option>
+              <option value="Transfer">Transfer</option>
+            </select>
+          </div>
+          <div class="form-group col-12">
             <label>Additional Request</label>
             <textarea class="form-control" id="txtCustRequest"></textarea>
           </div>
@@ -346,6 +354,7 @@
         email: $('#txtCustEmail').val(),
         phone: $('#txtCustPhone').val(),
         additional_request: $('#txtCustRequest').val(),
+        payment_method: $('#cmbPaymentMethod').val()
       }
       submitTransaction()
     })
