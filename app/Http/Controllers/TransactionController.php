@@ -15,7 +15,7 @@ class TransactionController extends Controller
 {
     public function list(Request $request)
     {
-        $data = Transaction::select('id','code','customer_name','status','total')->get();
+        $data = Transaction::select('id','code','customer_name','status','total')->orderBy('created_at','desc')->get();
 
         return view('trx.list', compact('data'));
     }
