@@ -123,6 +123,26 @@ class TransactionController extends Controller
         return $data;
     }
 
+    public function setPaid(Request $request)
+    {
+        \DB::beginTransaction();
+        try {
+            if(!$request->filled('id')) return redirect('/trx');
+
+            $transaction = Transaction::where('id',$request->id)->first();
+            if($transaction->status != 1) return redirect('/trx')->with('error','Status of transaction must be PENDING');
+            if(!$transaction) return redirect('/trx');
+            $transaction->status = 2;
+            $transaction->save();
+
+            \DB::commit();
+            return redirect('/trx')->with('success','Transaction Paid Successfully');
+        } catch(\Exception $e) {
+            \DB::rollback();
+            return redirect('/trx')->with('error',$e->getMessage());
+        }
+    }
+
     public function getProduct($id)
     {
         try {
