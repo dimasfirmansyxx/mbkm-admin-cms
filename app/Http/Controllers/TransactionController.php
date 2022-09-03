@@ -94,7 +94,7 @@ class TransactionController extends Controller
     private function generateCode()
     {
         $amount = Transaction::count();
-        return Carbon::now()->format('Ymd') . $amount + 1;
+        return 'TR-' . Carbon::now()->format('Ymd') . $amount + 1;
     }
 
     private function calculate($req)
