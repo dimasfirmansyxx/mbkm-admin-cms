@@ -22,7 +22,26 @@
       </thead>
       <tbody>
         @if (count($data) > 0)
-          
+          @foreach ($data as $row)
+            <tr>
+              <td>{{ $loop->iteration }}</td>
+              <td>{{ $row->code }}</td>
+              <td>{{ $row->customer_name }}</td>
+              <td>
+                @if ($row->status == 1)
+                  <span class="badge badge-danger">PENDING</span>
+                @elseif ($row->status == 2)
+                  <span class="badge badge-success">DONE / PAID</span>
+                @else
+                  <span class="badge badge-secondary">CANCELED</span>
+                @endif
+              </td>
+              <td>{{ number_format($row->total) }}</td>
+              <td>
+                
+              </td>
+            </tr>
+          @endforeach
         @else
           <tr>
             <td colspan="6" class="text-center">No data found</td>
