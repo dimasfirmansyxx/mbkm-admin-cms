@@ -240,7 +240,9 @@
       $('#lblDiscount').html(discountView)
       $('#lblGrandTotal').html(total.total)
 
-      localStorage.setItem('cart',JSON.stringify(cart))
+      @if(!isset($data))
+        localStorage.setItem('cart',JSON.stringify(cart))
+      @endif
     }
 
     $('#btnCancel').click(function(){
