@@ -268,6 +268,13 @@ class TransactionController extends Controller
             $transaction->status = 0;
             $transaction->save();
 
+            $vocUsage = VoucherUsage::where('transactions_id',$request->id)->with('voucher')->first();
+            if($vocUsage) {
+                $vocUsage->voucher->status = 1;
+                $vocUsage->voucher->save();
+                $vocUsage->delete();
+            }
+
             \DB::commit();
             return redirect('/trx')->with('success','Transaction Canceled Successfully');
         } catch(\Exception $e) {
