@@ -87,7 +87,7 @@ class TransactionController extends Controller
             $trx->total = $calculate->total->total;
             $trx->total_purchase = $calculate->total->purchase;
             $trx->payment_method = $request->customer->payment_method;
-            $trx->status = ($request->action == 'save') ? 1 : 2;
+            $trx->status = ($request->paid) ? 2 : 1;
             $trx->save();
 
             foreach($calculate->items as $item) {
@@ -149,7 +149,7 @@ class TransactionController extends Controller
             $trx->total = $calculate->total->total;
             $trx->total_purchase = $calculate->total->purchase;
             $trx->payment_method = $request->customer->payment_method;
-            $trx->status = ($request->action == 'save') ? 1 : 2;
+            $trx->status = ($request->paid) ? 2 : 1;
             $trx->save();
 
             TransactionDetail::where('transactions_id',$id)->delete();

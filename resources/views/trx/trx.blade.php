@@ -72,7 +72,6 @@
   <button class="btn btn-danger btn-sm" id="btnCancel"><i class="fas fa-times"></i> Cancel</button>
   <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#mdlVoucher"><i class="fas fa-ticket-alt"></i> Voucher</button>
   <button class="btn btn-primary btn-sm" id="btnSaveTransaction"><i class="fas fa-save"></i> Save</button>
-  <button class="btn btn-success btn-sm" id="btnTransactionDone"><i class="fas fa-check"></i> Transaction Done</button>
 </div>
 
 <div class="modal fade" id="mdlSelectProduct" tabindex="-1" aria-hidden="true">
@@ -158,13 +157,22 @@
             <label>Customer Phone</label>
             <input type="tel" class="form-control" autocomplete="off" id="txtCustPhone">
           </div>
-          <div class="form-group col-12">
+          <div class="form-group col-6">
             <label>Payment Method <span class="text-danger">*</span></label>
             <select id="cmbPaymentMethod" class="form-control">
               <option value="Cash">Cash</option>
               <option value="Debit">Debit</option>
               <option value="Transfer">Transfer</option>
             </select>
+          </div>
+          <div class="form-group col-6">
+            <label for="cbxPaid">Set PAID Transaction</label>
+            <div class="form-check mt-1">
+              <input class="form-check-input" type="checkbox" value="true" id="cbxPaid" checked>
+              <label class="form-check-label" for="cbxPaid">
+                Paid
+              </label>
+            </div>
           </div>
           <div class="form-group col-12">
             <label>Additional Request</label>
@@ -202,8 +210,6 @@
     @endif
 
     let tmpCart = {}
-
-    let action = null
 
     loadCart()
     function loadCart() {
@@ -353,7 +359,6 @@
     })
 
     $('#btnSaveTransaction').click(function(){
-      action = 'save'
       $('#mdlCustomer').modal('show')
     })
 
@@ -370,19 +375,16 @@
     })
 
     function submitTransaction() {
-      if(action == 'save'){
-        const items = cartReformat()
-        const data = {
-          items: items,
-          customer: customer,
-          total: total,
-          action: 'save'
-        }
-        localStorage.removeItem('cart')
-        $('#txtMaster').val(JSON.stringify(data))
-        $('#frmMaster').submit()
+      const items = cartReformat()
+      const data = {
+        items: items,
+        customer: customer,
+        total: total,
+        paid: $('#cbxPaid').is(':checked')
       }
-
+      localStorage.removeItem('cart')
+      $('#txtMaster').val(JSON.stringify(data))
+      $('#frmMaster').submit()
     }
 
     function cartReformat() {
