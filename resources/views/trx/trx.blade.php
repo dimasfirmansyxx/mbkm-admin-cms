@@ -186,14 +186,22 @@
 <script>
   $(function(){
 
-    const cart = (localStorage.getItem('cart') != undefined) ? JSON.parse(localStorage.getItem('cart')) : {}
-    const total = {
-      subtotal: 0,
-      discount: {type: 'flat', value: 0, voucher: ''},
-      total: 0,
-    }
+    @if(isset($data))
+      const cart = JSON.parse('{!! json_encode($data->cart) !!}')
+      const total = JSON.parse('{!! json_encode($data->total) !!}')
+      let customer = JSON.parse('{!! json_encode($data->customer) !!}')
+      fillCustomer()
+    @else
+      const cart = (localStorage.getItem('cart') != undefined) ? JSON.parse(localStorage.getItem('cart')) : {}
+      const total = {
+        subtotal: 0,
+        discount: {type: 'flat', value: 0, voucher: ''},
+        total: 0,
+      }
+      let customer = {}
+    @endif
+
     let tmpCart = {}
-    let customer = {}
 
     let action = null
 
@@ -380,6 +388,14 @@
       for(const index in cart) data.push(cart[index])
 
       return data
+    }
+
+    function fillCustomer() {
+      $('#txtCustName').val(customer.name)
+      $('#txtCustEmail').val(customer.email)
+      $('#txtCustPhone').val(customer.phone)
+      $('#txtCustRequest').val(customer.additional_request)
+      $('#cmbPaymentMethod').val(customer.payment_method)
     }
 
   })

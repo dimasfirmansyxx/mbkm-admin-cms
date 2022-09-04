@@ -25,7 +25,41 @@ class TransactionController extends Controller
         $products = Product::where('status',1)->with('category')->get();
         $categories = ProductCategory::all();
 
-        return view('trx.create')->with('products',$products)->with('categories',$categories);
+        return view('trx.trx')->with('products',$products)->with('categories',$categories);
+    }
+
+    public function update($id)
+    {
+        $transaction = Transaction::where('id',$id)->with('trxDetails.product')->with('vocUsages.voucher')->first();
+        if(!$transaction) return redirect('/trx');
+        $products = Product::where('status',1)->with('category')->get();
+        $categories = ProductCategory::all();
+
+        $cart = (object) [];
+        foreach($transaction->trxDetails as $detail) {
+            $cart->{$detail->products_id} = (object) [
+                'id' => $detail->products_id,
+                'name' => $detail->product->name,
+                'code' => $detail->product->code,
+                'price' => $detail->product->price,
+                'qty' => $detail->qty,
+                'subtotal' => $detail->product->price * $detail->qty,
+            ];
+        }
+
+        $vocType = ($transaction->vocUsages->voucher->type == '1') ? 'flat' : 'percentage';
+        $total = (object) ['subtotal' => 0, 'discount' => (object) ['type' => $vocType, 'value' => $transaction->vocUsages->voucher->disc_value], 'total' => 0];
+        $customer = (object) [
+            'name' => $transaction->customer_name, 
+            'email' => $transaction->customer_email, 
+            'phone' => $transaction->customer_phone, 
+            'additional_request' => $transaction->additional_request, 
+            'payment_method' => $transaction->payment_method, 
+        ];
+
+        $data = (object) compact('cart','total','customer');
+
+        return view('trx.trx')->with('products',$products)->with('categories',$categories)->with('data',$data);
     }
 
     public function createTrx(Request $request)
@@ -95,7 +129,7 @@ class TransactionController extends Controller
         $serial = Transaction::count() + 1;
         if(strlen($serial) == 1) $serial = '00' . $serial;
         elseif(strlen($serial) == 2) $serial = '0' . $serial;
-        
+
         return 'TR-' . Carbon::now()->format('Ymd') . $serial;
     }
 

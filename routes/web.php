@@ -57,6 +57,8 @@ Route::middleware('auth')->group(function(){
         Route::get('/',[TransactionController::class, 'list']);
         Route::get('/create',[TransactionController::class, 'create']);
         Route::post('/create',[TransactionController::class, 'createTrx']);
+        Route::get('/update/{id}',[TransactionController::class, 'update']);
+        Route::post('/update/{id}',[TransactionController::class, 'updateTrx']);
         Route::get('/paid',[TransactionController::class, 'setPaid']);
         Route::get('/cancel',[TransactionController::class, 'setCancel']);
         Route::get('/delete',[TransactionController::class, 'delete']);
