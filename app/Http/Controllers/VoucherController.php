@@ -46,8 +46,18 @@ class VoucherController extends Controller
 
 
 
-            if($request->filled('id')) $voucher = Voucher::where('id',$request->id)->first();
-            else $voucher = new Voucher;
+            if($request->filled('id')) {
+                $voucher = Voucher::where('id',$request->id)->first();
+                if($voucher->code != $request->code) {
+                    $check = Voucher::where('code',$request->code)->first();
+                    if($check) throw new \Exception('Code already exist');
+                }
+            } else {
+                $voucher = new Voucher;
+                $check = Voucher::where('code',$request->code)->first();
+                if($check) throw new \Exception('Code already exist');
+            } 
+            
             if(!$voucher) return redirect('/voucher');
 
             $voucher->code = $request->code;
