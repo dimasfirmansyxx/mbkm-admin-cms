@@ -30,7 +30,7 @@ class TransactionController extends Controller
 
     public function update($id)
     {
-        $transaction = Transaction::where('id',$id)->with('trxDetails.product')->with('vocUsages.voucher')->first();
+        $transaction = Transaction::where('id',$id)->where('status',1)->with('trxDetails.product')->with('vocUsages.voucher')->first();
         if(!$transaction) return redirect('/trx');
         $products = Product::where('status',1)->with('category')->get();
         $categories = ProductCategory::all();
