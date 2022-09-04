@@ -48,7 +48,15 @@ class TransactionController extends Controller
         }
 
         $vocType = ($transaction->vocUsages->voucher->type == '1') ? 'flat' : 'percentage';
-        $total = (object) ['subtotal' => 0, 'discount' => (object) ['type' => $vocType, 'value' => $transaction->vocUsages->voucher->disc_value], 'total' => 0];
+        $total = (object) [
+            'subtotal' => 0, 
+            'discount' => (object) [
+                'type' => $vocType, 
+                'value' => $transaction->vocUsages->voucher->disc_value,
+                'voucher' => $transaction->vocUsages->voucher->code
+            ], 
+            'total' => 0
+        ];
         $customer = (object) [
             'name' => $transaction->customer_name, 
             'email' => $transaction->customer_email, 
@@ -118,6 +126,76 @@ class TransactionController extends Controller
             \DB::commit();
 
             return redirect('/trx')->with('success','Transaction created');
+        } catch(\Exception $e) {
+            \DB::rollback();
+            return redirect()->back()->with('error',$e->getMessage());
+        }
+    }
+
+    public function updateTrx(Request $request, $id)
+    {
+        \DB::beginTransaction();
+        try {
+            $request = json_decode($request->data);
+            if(count($request->items) < 1) throw new \Exception('Please select at least one product');
+
+            $calculate = $this->calculate($request);
+
+            $trx = Transaction::where('id',$id)->where('status',1)->first();
+            if(!$trx) throw new \Exception('Transaction not found');
+            $trx->customer_name = $request->customer->name;
+            $trx->customer_email = $request->customer->email;
+            $trx->customer_phone = $request->customer->phone;
+            $trx->additional_request = $request->customer->additional_request;
+            $trx->subtotal = $calculate->total->subtotal;
+            $trx->total = $calculate->total->total;
+            $trx->total_purchase = $calculate->total->purchase;
+            $trx->payment_method = $request->customer->payment_method;
+            $trx->status = ($request->action == 'save') ? 1 : 2;
+            $trx->save();
+
+            TransactionDetail::where('transactions_id',$id)->delete();
+            foreach($calculate->items as $item) {
+                $detail = new TransactionDetail;
+                $detail->transactions_id = $trx->id;
+                $detail->products_id = $item->products_id;
+                $detail->qty = $item->qty;
+                $detail->price_satuan = $item->price_satuan;
+                $detail->price_total = $item->price_total;
+                $detail->price_purchase_satuan = $item->price_purchase_satuan;
+                $detail->price_purchase_total = $item->price_purchase_total;
+                $detail->save();
+            }
+
+            if($request->total->discount->value > 0) {
+                $vocUsageOld = VoucherUsage::where('transactions_id',$trx->id)->with('voucher')->first();
+                if($vocUsageOld && $request->total->discount->voucher != $vocUsageOld->voucher->code) {
+                    $voucher = Voucher::where('code',$request->total->discount->voucher)->where('status',1)->first();
+                    if(!$voucher) throw new \Exception('Voucher not found');
+                    $today = Carbon::now()->format('Y-m-d');
+                    $start = Carbon::parse($voucher->start_date)->format('Y-m-d');
+                    $end = Carbon::parse($voucher->end_date)->format('Y-m-d');
+
+                    if(strtotime($today) >= strtotime($start) && strtotime($today) <= strtotime($end)) {
+                        $vocUsage = new VoucherUsage;
+                        $vocUsage->transactions_id = $trx->id;
+                        $vocUsage->vouchers_id = $voucher->id;
+                        $vocUsage->discounted_value = $calculate->total->discount;
+                        $vocUsage->save();
+
+                        $voucher->status = 0;
+                        $voucher->save();
+                    } else throw new \Exception('Voucher are not eligible');
+
+                    $vocUsageOld->delete();
+                    $vocOld = Voucher::where('id',$vocUsageOld->vouchers_id)->first();
+                    $vocOld->status = 1;
+                    $vocOld->save();
+                }
+            }
+
+            \DB::commit();
+            return redirect('/trx')->with('success','Transaction updated');
         } catch(\Exception $e) {
             \DB::rollback();
             return redirect()->back()->with('error',$e->getMessage());
