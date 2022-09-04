@@ -92,8 +92,11 @@ class TransactionController extends Controller
 
     private function generateCode()
     {
-        $amount = Transaction::count();
-        return 'TR-' . Carbon::now()->format('Ymd') . $amount + 1;
+        $serial = Transaction::count() + 1;
+        if(strlen($serial) == 1) $serial = '00' . $serial;
+        elseif(strlen($serial) == 2) $serial = '0' . $serial;
+        
+        return 'TR-' . Carbon::now()->format('Ymd') . $serial;
     }
 
     private function calculate($req)
