@@ -48,8 +48,17 @@ class ProductController extends Controller
             if(!$request->filled('price') || $request->price < 1) throw new \Exception('Price field must be filled');
             if(!$request->filled('purchase_price') || $request->purchase_price < 1) throw new \Exception('Purchase Price field must be filled');
 
-            if($request->filled('id')) $data = Product::where('id',$request->id)->first();
-            else $data = new Product;
+            if($request->filled('id')) {
+                $data = Product::where('id',$request->id)->first();
+                if($request->code != $data->code) {
+                    $check = Product::where('code',$request->code)->first();
+                    if($check) throw new \Exception('Code already exist');
+                }
+            } else {
+                $data = new Product;
+                $check = Product::where('code',$request->code)->first();
+                if($check) throw new \Exception('Code already exist');
+            }
 
             if(!$data) return redirect('/product');
 
