@@ -200,9 +200,10 @@ class TransactionController extends Controller
         }
     }
 
-    private function generateCode()
+    public function generateCode()
     {
-        $serial = Transaction::count() + 1;
+        $latestTrx = Transaction::orderBy('created_at','desc')->first();
+        $serial = (int) substr($latestTrx->code, -3) + 1;
         if(strlen($serial) == 1) $serial = '00' . $serial;
         elseif(strlen($serial) == 2) $serial = '0' . $serial;
 
