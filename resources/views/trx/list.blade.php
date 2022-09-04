@@ -44,7 +44,7 @@
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
                     @if ($row->status == 1)
-                      <a class="dropdown-item" href="#"><i class="fas fa-pen"></i> Edit</a>
+                      <a class="dropdown-item" href="/trx/update/{{ $row->id }}"><i class="fas fa-pen"></i> Edit</a>
                       <a class="dropdown-item" onclick="return confirm('Are you sure want to confirm this transaction as PAID ?')" href="/trx/paid?id={{$row->id}}"><i class="fas fa-check-circle"></i> Set PAID</a>
                       <a class="dropdown-item" onclick="return confirm('Are you sure want to cancel this transaction ?')" href="/trx/cancel?id={{$row->id}}"><i class="fas fa-times-circle"></i> Cancel</a>
                     @elseif ($row->status == 0)
