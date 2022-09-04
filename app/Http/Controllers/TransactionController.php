@@ -47,16 +47,14 @@ class TransactionController extends Controller
             ];
         }
 
-        $vocType = ($transaction->vocUsages->voucher->type == '1') ? 'flat' : 'percentage';
-        $total = (object) [
-            'subtotal' => 0, 
-            'discount' => (object) [
-                'type' => $vocType, 
-                'value' => $transaction->vocUsages->voucher->disc_value,
-                'voucher' => $transaction->vocUsages->voucher->code
-            ], 
-            'total' => 0
-        ];
+        $total = (object) ['subtotal' => 0, 'discount' => (object) ['type' => 'flat','value' => 0, 'voucher' => ''],'total' => 0];
+        if($transaction->vocUsages) {
+            $vocType = ($transaction->vocUsages->voucher->type == '1') ? 'flat' : 'percentage';
+            $total->discount->type = $vocType;
+            $total->discount->value = $transaction->vocUsages->voucher->disc_value;
+            $total->discount->voucher = $transaction->vocUsages->voucher->code;
+        }
+
         $customer = (object) [
             'name' => $transaction->customer_name, 
             'email' => $transaction->customer_email, 
