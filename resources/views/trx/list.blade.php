@@ -9,10 +9,36 @@
     <a href="/trx/create" class="btn btn-primary btn-sm"><i class="fas fa-cash-register"></i> Create Transaction</a>
   </div>
   <div class="card-body">
+    <form action="" method="get" class="row">
+      <div class="form-group col">
+        <input type="text" name="code" class="form-control" placeholder="Transaction ID" autocomplete="off" value="{{ request()->filled('code') ? request()->get('code') : '' }}">
+      </div>
+      <div class="form-group col">
+        <input type="text" name="customer_name" class="form-control" placeholder="Customer Name" autocomplete="off" value="{{ request()->filled('customer_name') ? request()->get('customer_name') : '' }}">
+      </div>
+      <div class="form-group col">
+        <input type="email" name="customer_email" class="form-control" placeholder="Customer Email" autocomplete="off" value="{{ request()->filled('customer_email') ? request()->get('customer_email') : '' }}">
+      </div>
+      <div class="form-group col">
+        <select name="status" class="form-control">
+          <option value="0">--- Select Status ---</option>
+          <option value="pending" {{ (request()->filled('status') && request()->get('status') == 'pending') ? 'selected' : '' }}>Pending</option>
+          <option value="paid" {{ (request()->filled('status') && request()->get('status') == 'paid') ? 'selected' : '' }}>Paid</option>
+          <option value="cancel" {{ (request()->filled('status') && request()->get('status') == 'cancel') ? 'selected' : '' }}>Cancel</option>
+        </select>
+      </div>
+      <div class="form-group col">
+        <input type="text" name="date" id="dtRangePicker" class="form-control" placeholder="Date" value="{{ (request()->filled('date')) ? request()->get('date') : \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d') . ' - ' . \Carbon\Carbon::now()->endOfMonth()->format('Y-m-d') }}">
+      </div>
+      <div class="col text-right">
+        <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Search</button>
+      </div>
+    </form>
     <table class="table table-bordered table-hover table-striped">
       <thead>
         <tr class="text-center">
           <th width="100">#</th>
+          <th>Date</th>
           <th>Code</th>
           <th>Customer</th>
           <th>Status</th>
@@ -25,6 +51,7 @@
           @foreach ($data as $row)
             <tr>
               <td>{{ $loop->iteration }}</td>
+              <td>{{ \Carbon\Carbon::parse($row->created_at)->format('d/m/Y') }}</td>
               <td>{{ $row->code }}</td>
               <td>{{ $row->customer_name }}</td>
               <td>
