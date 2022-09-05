@@ -71,8 +71,6 @@
     <script>
       $(function(){
         $('#dtRangePicker').daterangepicker({
-          startDate: `{{ \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d') }}`,
-          endDate: `{{ \Carbon\Carbon::now()->endOfMonth()->format('Y-m-d') }}`,
           locale: {
             format: 'Y-MM-DD'
           }
