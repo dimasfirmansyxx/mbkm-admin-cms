@@ -224,9 +224,11 @@ class TransactionController extends Controller
     public function generateCode()
     {
         $latestTrx = Transaction::orderBy('created_at','desc')->first();
-        $serial = (int) substr($latestTrx->code, -3) + 1;
-        if(strlen($serial) == 1) $serial = '00' . $serial;
-        elseif(strlen($serial) == 2) $serial = '0' . $serial;
+        if($latestTrx) {
+            $serial = (int) substr($latestTrx->code, -3) + 1;
+            if(strlen($serial) == 1) $serial = '00' . $serial;
+            elseif(strlen($serial) == 2) $serial = '0' . $serial;
+        } else $serial = '001';
 
         return 'TR-' . Carbon::now()->format('Ymd') . $serial;
     }
