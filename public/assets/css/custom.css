@@ -1,7 +1,9 @@
 .floating-button {
     position: fixed;
     right: 0;
+    bottom: 0;
     margin-right: 15px;
+    margin-bottom: 10px;
 }
 
 .transaction-page .card .card-body { padding: 10px 0; }
