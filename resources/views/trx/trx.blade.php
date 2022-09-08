@@ -210,6 +210,7 @@
     @endif
 
     let tmpCart = {}
+    let tmpState = 'add'
 
     loadCart()
     function loadCart() {
@@ -272,25 +273,21 @@
 
     $('.product-item').click(function(){
       const id = $(this).data('product')
-      if(cart[id] != undefined) {
-        tmpCart = cart[id]
-        $('#mdlSelectProduct').modal('show')
-      } else {
-        $.ajax({
-          url: `/trx/product/${id}`,
-          type: 'get',
-          dataType: 'json',
-          success:function(res) {
-            tmpCart = res.data
-            tmpCart.qty = 1
-            tmpCart.subtotal = res.data.price
-            $('#mdlSelectProduct').modal('show')
-          },
-          error: function(err) {
-            alert(err.responseJSON.message)
-          }
-        })
-      }
+      $.ajax({
+        url: `/trx/product/${id}`,
+        type: 'get',
+        dataType: 'json',
+        success:function(res) {
+          tmpCart = res.data
+          tmpCart.qty = 1
+          tmpCart.subtotal = res.data.price
+          tmpState = 'add'
+          $('#mdlSelectProduct').modal('show')
+        },
+        error: function(err) {
+          alert(err.responseJSON.message)
+        }
+      })
     })
 
     $('#mdlSelectProduct').on('shown.bs.modal',function(){
@@ -322,7 +319,8 @@
     $('#frmSelectProduct').on('submit',function(e){
       e.preventDefault()
       if(tmpCart.qty > 0) {
-        cart[tmpCart.id] = tmpCart
+        if(cart[tmpCart.id] != undefined && tmpState == 'add') cart[tmpCart.id].qty = parseInt(cart[tmpCart.id].qty) + parseInt(tmpCart.qty)
+        else cart[tmpCart.id] = tmpCart
         loadCart()
         $('#mdlSelectProduct').modal('hide')
       } else alert('Qty must be greater than zero')
@@ -355,6 +353,7 @@
     $('#listCart').on('click','.btnUpdate',function(){
       const id = $(this).data('item')
       tmpCart = cart[id]
+      tmpState = 'edit'
       $('#mdlSelectProduct').modal('show')  
     })
 
