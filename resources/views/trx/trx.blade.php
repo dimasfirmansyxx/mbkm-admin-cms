@@ -229,11 +229,11 @@
           <td>${item.name}</td>
           <td>${parseFloat(item.price)}</td>
           <td>${item.qty}</td>
-          <td>${parseFloat(item.subtotal)}</td>
+          <td>${parseFloat(item.price) * parseFloat(item.qty)}</td>
         </tr>
         `)
 
-        total.subtotal += parseFloat(item.subtotal)
+        total.subtotal += parseFloat(item.price) * parseFloat(item.qty)
       }
 
       let discount = total.discount.value
