@@ -19,6 +19,7 @@ class AdminSeed extends Seeder
             $admin = new Admin;
             $admin->username = 'admin';
             $admin->password = bcrypt('123');
+            $admin->role = Role::where('name','admin')->first()->id;
             $admin->save();
         }
     }
