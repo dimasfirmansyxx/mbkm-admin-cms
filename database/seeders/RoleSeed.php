@@ -19,9 +19,9 @@ class RoleSeed extends Seeder
 
         foreach ($roles as $role) {
             if (!Role::where('name',$role)->first()) {
-                $role = new Role;
-                $role->name = $role;
-                $role->save();
+                $data = new Role;
+                $data->name = $role;
+                $data->save();
             }
         }
     }
