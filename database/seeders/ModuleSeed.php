@@ -15,7 +15,7 @@ class ModuleSeed extends Seeder
      */
     public function run()
     {
-        $modules = ['transaction','product_category','product','voucher','role','authorization'];
+        $modules = ['transaction','product_category','product','voucher','role','authorization','user'];
 
         foreach ($modules as $module) {
             if (!Module::where('name',$module)->first()) {
