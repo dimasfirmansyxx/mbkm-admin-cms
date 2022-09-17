@@ -70,6 +70,8 @@ Route::middleware('auth')->group(function(){
     Route::prefix('/authorization')->group(function(){
         Route::prefix('/role')->group(function(){
             Route::get('/',[RoleController::class, 'list']);
+            Route::get('/form',[RoleController::class, 'form']);
+            Route::post('/form',[RoleController::class, 'save']);
         });
     });
 });
