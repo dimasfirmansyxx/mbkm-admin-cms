@@ -18,9 +18,11 @@ class RoleSeed extends Seeder
         $roles = ['admin','cashier'];
 
         foreach ($roles as $role) {
-            $role = new Role;
-            $role->name = $role;
-            $role->save();
+            if (!Role::where('name',$role)->first()) {
+                $role = new Role;
+                $role->name = $role;
+                $role->save();
+            }
         }
     }
 }

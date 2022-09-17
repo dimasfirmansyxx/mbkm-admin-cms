@@ -22,4 +22,6 @@ class Admin extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function role() { $this->belongsTo(Role::class, 'role_id', 'id'); }
 }
