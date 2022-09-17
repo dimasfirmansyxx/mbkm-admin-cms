@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,10 @@ Route::middleware('auth')->group(function(){
             Route::get('/',[RoleController::class, 'list']);
             Route::get('/form',[RoleController::class, 'form']);
             Route::post('/form',[RoleController::class, 'save']);
+        });
+
+        Route::prefix('/user')->group(function(){
+            Route::get('/',[UserController::class, 'list']);
         });
     });
 });
