@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,5 +65,11 @@ Route::middleware('auth')->group(function(){
         Route::get('/delete',[TransactionController::class, 'delete']);
         Route::get('/product/{id}',[TransactionController::class, 'getProduct']);
         Route::post('/voucher',[TransactionController::class, 'claimVoucher']);
+    });
+
+    Route::prefix('/authorization')->group(function(){
+        Route::prefix('/role')->group(function(){
+            Route::get('/',[RoleController::class, 'list']);
+        });
     });
 });

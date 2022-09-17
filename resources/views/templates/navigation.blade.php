@@ -30,4 +30,16 @@
     <span>Voucher</span>
   </a>
 </li>
-  
+<li class="nav-item">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+    aria-expanded="true" aria-controls="collapseThree">
+  <i class="fas fa-fw fa-lock"></i>
+  <span>Authorization</span>
+  </a>
+  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+      <a class="collapse-item" href="/authorization/role">Role</a>
+      <a class="collapse-item" href="/authorization/permission">Permission</a>
+    </div>
+  </div>
+</li>
