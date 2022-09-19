@@ -8,6 +8,7 @@ use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +82,11 @@ Route::middleware('auth')->group(function(){
             Route::get('/form',[UserController::class, 'form']);
             Route::post('/form',[UserController::class, 'save']);
             Route::get('/delete',[UserController::class, 'delete']);
+        });
+
+        Route::prefix('/permission')->group(function(){
+            Route::get('/',[PermissionController::class, 'list']);
+            Route::post('/',[PermissionController::class, 'save']);
         });
     });
 });
