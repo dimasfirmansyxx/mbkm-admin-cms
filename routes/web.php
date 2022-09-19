@@ -78,6 +78,8 @@ Route::middleware('auth')->group(function(){
 
         Route::prefix('/user')->group(function(){
             Route::get('/',[UserController::class, 'list']);
+            Route::get('/form',[UserController::class, 'form']);
+            Route::post('/form',[UserController::class, 'save']);
         });
     });
 });
