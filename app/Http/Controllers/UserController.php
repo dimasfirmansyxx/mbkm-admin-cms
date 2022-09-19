@@ -45,4 +45,23 @@ class UserController extends Controller
             return redirect()->back()->with('error',$e->getMessage());
         }
     }
+
+    public function delete(Request $request)
+    {
+        \DB::beginTransaction();
+        try {
+            if (!$request->filled('id')) return redirect()->back();
+
+            $user = Admin::where('id',$request->id)->first();
+            if (!$user) throw new \Exception('User not found');
+            
+            $user->delete();
+
+            \DB::commit();
+            return redirect('/authorization/user')->with('success','User deleted successfully');
+        } catch(\Exception $e) {
+            \DB::rollback();
+            return redirect()->back()->with('error',$e->getMessage());
+        }
+    }
 }
