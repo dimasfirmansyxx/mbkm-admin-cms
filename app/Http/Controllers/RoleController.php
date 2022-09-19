@@ -49,4 +49,24 @@ class RoleController extends Controller
             return redirect()->back()->with('error',$e->getMessage());
         }
     }
+
+    public function delete(Request $request)
+    {
+        \DB::beginTransaction();
+        try {
+            if (!$request->filled('id')) return redirect()->back();
+
+            $role = Role::where('id',$request->id)->first();
+            if (!$role) throw new \Exception('ID Role not found');
+
+            $role->delete();
+
+            \DB::commit();
+
+            return redirect('/authorization/role')->with('success','Role deleted successfully');
+        } catch(\Exception $e) {
+            \DB::rollback();
+            return redirect()->back()->with('error',$e->getMessage());
+        }
+    }
 }

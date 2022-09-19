@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function(){
             Route::get('/',[RoleController::class, 'list']);
             Route::get('/form',[RoleController::class, 'form']);
             Route::post('/form',[RoleController::class, 'save']);
+            Route::get('/delete',[RoleController::class, 'delete']);
         });
 
         Route::prefix('/user')->group(function(){
