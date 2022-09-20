@@ -15,12 +15,12 @@ class UserController extends Controller
         return view('admin.list', compact('data'));
     }
 
-    public function form(Request $request)
+    public function form(Request $request, $id = null)
     {
         $roles = Role::all();
         $view = view('admin.form')->with('roles',$roles);
-        if($request->filled('id')) {
-            $data = Admin::where('id',$request->id)->first();
+        if($id) {
+            $data = Admin::where('id',$id)->first();
             if(!$data) return redirect('/authorization/user');
             $view = $view->with('data',$data);
         }
@@ -28,11 +28,11 @@ class UserController extends Controller
         return $view;
     }
 
-    public function save(Request $request)
+    public function save(Request $request, $id = null)
     {
         \DB::beginTransaction();
         try {
-            if (!$request->filled('id')) {
+            if (!$id) {
                 if (!$request->filled('username')) throw new \Exception('Username field must be filled');
                 if (!$request->filled('password')) throw new \Exception('Password field must be filled');
                 if (!$request->filled('role') || $request->role == '0') throw new \Exception('Role field must be filled');
@@ -40,12 +40,12 @@ class UserController extends Controller
             }
             if (!Role::where('id',$request->role)->first()) throw new \Exception('Role not found');
 
-            if (!$request->filled('id')) {
+            if (!$id) {
                 $user = new Admin;
                 $user->username = $request->username;
                 $user->password = bcrypt($request->password);
             } else {
-                $user = Admin::where('id',$request->id)->first();
+                $user = Admin::where('id',$id)->first();
                 if (!$user) throw new \Exception('User not found');
             }
             $user->role_id = $request->role;
