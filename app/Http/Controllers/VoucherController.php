@@ -15,12 +15,12 @@ class VoucherController extends Controller
         return view('voucher.list', compact('data'));
     }
 
-    public function form(Request $request)
+    public function form(Request $request, $id = null)
     {
         $view = view('voucher.form');
 
-        if($request->filled('id')) {
-            $data = Voucher::where('id',$request->id)->first();
+        if($id) {
+            $data = Voucher::where('id',$id)->first();
             if(!$data) return redirect('/voucher');
             $view = $view->with('data', $data);
         }
@@ -28,7 +28,7 @@ class VoucherController extends Controller
         return $view;
     }
 
-    public function save(Request $request)
+    public function save(Request $request, $id = null)
     {
         \DB::beginTransaction();
         try {
@@ -46,8 +46,8 @@ class VoucherController extends Controller
 
 
 
-            if($request->filled('id')) {
-                $voucher = Voucher::where('id',$request->id)->first();
+            if($id) {
+                $voucher = Voucher::where('id',$id)->first();
                 if($voucher->code != $request->code) {
                     $check = Voucher::where('code',$request->code)->first();
                     if($check) throw new \Exception('Code already exist');

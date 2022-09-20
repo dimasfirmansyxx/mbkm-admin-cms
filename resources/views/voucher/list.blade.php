@@ -36,7 +36,7 @@
               </td>
               <td>{!! ($row->status) ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-secondary">Claimed</span>' !!}</td>
               <td>
-                <a href="/voucher/form?id={{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
+                <a href="/voucher/form/{{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
                 <a href="/voucher/delete?id={{ $row->id }}" onclick="return confirm('Are you sure want to delete this voucher ?')" class="btn btn-danger btn-sm btn-icon"><i class="fas fa-trash"></i></a>
               </td>
             </tr>
