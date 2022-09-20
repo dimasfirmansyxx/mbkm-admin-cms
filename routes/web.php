@@ -57,8 +57,8 @@ Route::middleware(['auth','permission'])->group(function(){
         Route::get('/',[VoucherController::class, 'list'])->name('voucher|view');
         Route::get('/form',[VoucherController::class, 'form'])->name('voucher|add');
         Route::get('/form/{id}',[VoucherController::class, 'form'])->name('voucher|edit');
-        Route::post('/form',[VoucherController::class, 'save']->name('voucher|add'));
-        Route::post('/form/{id}',[VoucherController::class, 'save']->name('voucher|edit'));
+        Route::post('/form',[VoucherController::class, 'save'])->name('voucher|add');
+        Route::post('/form/{id}',[VoucherController::class, 'save'])->name('voucher|edit');
         Route::get('/delete',[VoucherController::class, 'delete'])->name('voucher|delete');
     });
 
