@@ -79,18 +79,18 @@ Route::middleware(['auth','permission'])->group(function(){
         Route::prefix('/role')->group(function(){
             Route::get('/',[RoleController::class, 'list'])->name('role|view');
             Route::get('/form',[RoleController::class, 'form'])->name('role|add');
-            Route::get('/form',[RoleController::class, 'form'])->name('role|edit');
+            Route::get('/form/{id}',[RoleController::class, 'form'])->name('role|edit');
             Route::post('/form',[RoleController::class, 'save'])->name('role|add');
-            Route::post('/form',[RoleController::class, 'save'])->name('role|edit');
+            Route::post('/form/{id}',[RoleController::class, 'save'])->name('role|edit');
             Route::get('/delete',[RoleController::class, 'delete'])->name('role|delete');
         });
 
         Route::prefix('/user')->group(function(){
             Route::get('/',[UserController::class, 'list'])->name('user|view');
             Route::get('/form',[UserController::class, 'form'])->name('user|add');
-            Route::get('/form',[UserController::class, 'form'])->name('user|edit');
+            Route::get('/form/{id}',[UserController::class, 'form'])->name('user|edit');
             Route::post('/form',[UserController::class, 'save'])->name('user|add');
-            Route::post('/form',[UserController::class, 'save'])->name('user|edit');
+            Route::post('/form/{id}',[UserController::class, 'save'])->name('user|edit');
             Route::get('/delete',[UserController::class, 'delete'])->name('user|delete');
         });
 
