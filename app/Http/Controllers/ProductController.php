@@ -152,9 +152,15 @@ class ProductController extends Controller
         \DB::beginTransaction();
         try {
             if(!$request->filled('id')) return redirect()->back();
+            if (!$request->filled('replace')) return redirect()->with()->with('error','Please select new Category');
+            if ($request->id == $request->replace) return redirect()->back()->with('error','New Category cannot be same');
 
             $category = ProductCategory::where('id',$request->id)->first();
             if(!$category) throw new \Exception('ID not found');
+            if (!ProductCategory::where('id',$request->replace)->first()) throw new \Exception('ID not found');
+
+            Product::where('product_categories_id',$request->id)->update(['product_categories_id' => $request->replace]);
+
             $category->delete();
 
             \DB::commit();
