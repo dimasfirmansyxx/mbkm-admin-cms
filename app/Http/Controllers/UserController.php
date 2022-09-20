@@ -15,31 +15,44 @@ class UserController extends Controller
         return view('admin.list', compact('data'));
     }
 
-    public function form()
+    public function form(Request $request)
     {
         $roles = Role::all();
+        $view = view('admin.form')->with('roles',$roles);
+        if($request->filled('id')) {
+            $data = Admin::where('id',$request->id)->first();
+            if(!$data) return redirect('/authorization/user');
+            $view = $view->with('data',$data);
+        }
 
-        return view('admin.form', compact('roles'));
+        return $view;
     }
 
     public function save(Request $request)
     {
         \DB::beginTransaction();
         try {
-            if (!$request->filled('username')) throw new \Exception('Username field must be filled');
-            if (!$request->filled('password')) throw new \Exception('Password field must be filled');
-            if (!$request->filled('role') || $request->role == '0') throw new \Exception('Role field must be filled');
+            if (!$request->filled('id')) {
+                if (!$request->filled('username')) throw new \Exception('Username field must be filled');
+                if (!$request->filled('password')) throw new \Exception('Password field must be filled');
+                if (!$request->filled('role') || $request->role == '0') throw new \Exception('Role field must be filled');
+                if (Admin::where('username',$request->username)->first()) throw new \Exception('Username already registered');
+            }
             if (!Role::where('id',$request->role)->first()) throw new \Exception('Role not found');
-            if (Admin::where('username',$request->username)->first()) throw new \Exception('Username already registered');
 
-            $user = new Admin;
-            $user->username = $request->username;
-            $user->password = bcrypt($request->password);
+            if (!$request->filled('id')) {
+                $user = new Admin;
+                $user->username = $request->username;
+                $user->password = bcrypt($request->password);
+            } else {
+                $user = Admin::where('id',$request->id)->first();
+                if (!$user) throw new \Exception('User not found');
+            }
             $user->role_id = $request->role;
             $user->save();
 
             \DB::commit();
-            return redirect('/authorization/user')->with('success','User created successfully');
+            return redirect('/authorization/user')->with('success','User saved successfully');
         } catch(\Exception $e) {
             \DB::rollback();
             return redirect()->back()->with('error',$e->getMessage());

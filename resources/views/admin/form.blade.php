@@ -7,25 +7,27 @@
   <div class="card-header py-3">
     <h6 class="m-0 font-weight-bold text-primary">
       <a href="/authorization/user" class="btn btn-secondary btn-sm"><i class="fas fa-chevron-left"></i></a> 
-      Add User
+      {{ (isset($data)) ? 'Edit Role' : 'Add' }} User
     </h6>
   </div>
   <div class="card-body">
     <form action="" method="post">
-      <div class="form-group">
-        <label>Username <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="username" required autocomplete="off">
-      </div>
-      <div class="form-group">
-        <label>Password <span class="text-danger">*</span></label>
-        <input type="password" class="form-control" name="password" required autocomplete="off">
-      </div>
+      @if (!isset($data))
+        <div class="form-group">
+          <label>Username <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" name="username" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>Password <span class="text-danger">*</span></label>
+          <input type="password" class="form-control" name="password" required autocomplete="off">
+        </div>
+      @endif
       <div class="form-group">
         <label>Role <span class="text-danger">*</span></label>
         <select name="role" class="form-control">
           <option value="0">--- Select Role ---</option>
           @foreach ($roles as $role)
-            <option value="{{ $role->id }}">{{ strtoupper($role->name) }}</option>
+            <option value="{{ $role->id }}" {{ ($data->role_id == $role->id) ? 'selected' : '' }}>{{ strtoupper($role->name) }}</option>
           @endforeach
         </select>
       </div>
