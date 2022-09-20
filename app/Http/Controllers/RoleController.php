@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\Admin;
 
 class RoleController extends Controller
 {
@@ -55,9 +56,14 @@ class RoleController extends Controller
         \DB::beginTransaction();
         try {
             if (!$request->filled('id')) return redirect()->back();
+            if (!$request->filled('replace')) return redirect()->with()->with('error','Please select new Role');
+            if ($request->id == $request->replace) return redirect()->back()->with('error','New role cannot be same');
 
             $role = Role::where('id',$request->id)->first();
             if (!$role) throw new \Exception('ID Role not found');
+            if (!Role::where('id',$request->replace)->first()) throw new \Exception('ID Role not found');
+
+            Admin::where('role_id',$request->id)->update(['role_id' => $request->replace]);
 
             $role->delete();
 
