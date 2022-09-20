@@ -24,7 +24,7 @@
               <td class="text-center">{{ $loop->iteration }}</td>
               <td>{{ $row->category }}</td>
               <td width="100">
-                <a href="/product/category/form?id={{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
+                <a href="/product/category/form/{{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
                 <a href="/product/category/delete?id={{ $row->id }}" onclick="return confirm('Are you sure want to delete this category?')" class="btn btn-danger btn-sm btn-icon"><i class="fas fa-trash"></i></a>
               </td>
             </tr>

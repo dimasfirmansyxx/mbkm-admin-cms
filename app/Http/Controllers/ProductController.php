@@ -110,12 +110,12 @@ class ProductController extends Controller
         return view('category.list', compact('data'));
     }
 
-    public function categoryForm(Request $request)
+    public function categoryForm(Request $request, $id = null)
     {
         $view = view('category.form');
 
-        if($request->filled('id')) {
-            $data = ProductCategory::where('id',$request->id)->first();
+        if($id) {
+            $data = ProductCategory::where('id',$id)->first();
             if(!$data) return redirect('/product/category');
             $view = $view->with('data', $data);
         }
@@ -123,13 +123,13 @@ class ProductController extends Controller
         return $view;
     }
 
-    public function categorySave(Request $request)
+    public function categorySave(Request $request, $id = null)
     {
         \DB::beginTransaction();
         try {
             if(!$request->filled('category')) throw new \Exception('Category field must be filled');
 
-            if($request->filled('id')) $category = ProductCategory::where('id',$request->id)->first();
+            if($id) $category = ProductCategory::where('id',$id)->first();
             else $category = new ProductCategory;
     
             if(!$category) return redirect('/product/category');
