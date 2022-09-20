@@ -24,13 +24,13 @@ class ProductController extends Controller
         return view('product.list', compact('data'));
     }
 
-    public function productForm(Request $request)
+    public function productForm(Request $request, $id = null)
     {
         $categories = ProductCategory::all();
         $view = view('product.form', compact('categories'));
 
-        if($request->filled('id')) {
-            $data = Product::where('id',$request->id)->with('category')->first();
+        if($id) {
+            $data = Product::where('id',$id)->with('category')->first();
             if(!$data) return redirect('/product');
             $view = $view->with('data', $data);
         }
@@ -38,7 +38,7 @@ class ProductController extends Controller
         return $view;
     }
 
-    public function productSave(Request $request)
+    public function productSave(Request $request, $id = null)
     {
         \DB::beginTransaction();
         try {
@@ -48,8 +48,8 @@ class ProductController extends Controller
             if(!$request->filled('price') || $request->price < 1) throw new \Exception('Price field must be filled');
             if(!$request->filled('purchase_price') || $request->purchase_price < 1) throw new \Exception('Purchase Price field must be filled');
 
-            if($request->filled('id')) {
-                $data = Product::where('id',$request->id)->first();
+            if($id) {
+                $data = Product::where('id',$id)->first();
                 if($request->code != $data->code) {
                     $check = Product::where('code',$request->code)->first();
                     if($check) throw new \Exception('Code already exist');
