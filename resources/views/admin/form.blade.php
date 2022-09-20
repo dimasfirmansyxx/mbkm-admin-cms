@@ -27,7 +27,7 @@
         <select name="role" class="form-control">
           <option value="0">--- Select Role ---</option>
           @foreach ($roles as $role)
-            <option value="{{ $role->id }}" {{ ($data->role_id == $role->id) ? 'selected' : '' }}>{{ strtoupper($role->name) }}</option>
+            <option value="{{ $role->id }}" {{ (isset($data) && $data->role_id == $role->id) ? 'selected' : '' }}>{{ strtoupper($role->name) }}</option>
           @endforeach
         </select>
       </div>
