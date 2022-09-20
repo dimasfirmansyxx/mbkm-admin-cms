@@ -24,7 +24,7 @@
               <td class="text-center">{{ $loop->iteration }}</td>
               <td>{{ $row->name }}</td>
               <td width="100">
-                <a href="/authorization/role/form?id={{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
+                <a href="/authorization/role/form/{{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
                 <a href="#" data-id="{{ $row->id }}" class="btn btn-danger btn-sm btn-icon btnDelete"><i class="fas fa-trash"></i></a>
               </td>
             </tr>

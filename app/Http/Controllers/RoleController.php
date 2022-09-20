@@ -15,12 +15,12 @@ class RoleController extends Controller
         return view('role.list', compact('data'));
     }
 
-    public function form(Request $request)
+    public function form(Request $request, $id = null)
     {
         $view = view('role.form');
 
-        if($request->filled('id')) {
-            $data = Role::where('id',$request->id)->first();
+        if($id) {
+            $data = Role::where('id',$id)->first();
             if(!$data) return redirect('/authorization/role');
             $view = $view->with('data', $data);
         }
@@ -28,13 +28,13 @@ class RoleController extends Controller
         return $view;
     }
 
-    public function save(Request $request)
+    public function save(Request $request, $id = null)
     {
         \DB::beginTransaction();
         try {
             if(!$request->filled('name')) throw new \Exception('Role field must be filled');
 
-            if($request->filled('id')) $role = Role::where('id',$request->id)->first();
+            if($id) $role = Role::where('id',$id)->first();
             else $role = new Role;
     
             if(!$role) return redirect('/authorization/role');
