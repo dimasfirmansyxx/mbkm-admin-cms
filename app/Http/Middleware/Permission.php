@@ -27,9 +27,7 @@ class Permission
             $permission = Authorization::where('role_id',$user->role_id)->where('module_id',$module->id)->first();
             $type = $route[1];
     
-            if (!$permission->{$type}) {
-                return redirect('/');
-            }
+            if (!$permission || !$permission->{$type}) return redirect('/');
         }
         return $next($request);
     }
