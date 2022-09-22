@@ -6,7 +6,9 @@
 <div class="card shadow">
   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
     <h6 class="m-0 font-weight-bold text-primary">Categories List</h6>
-    <a href="/product/category/form" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+    @if (permission(auth()->user(),'product_category','add'))
+      <a href="/product/category/form" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+    @endif
   </div>
   <div class="card-body">
     <table class="table table-bordered table-hover table-striped">
@@ -24,8 +26,12 @@
               <td class="text-center">{{ $loop->iteration }}</td>
               <td>{{ $row->category }}</td>
               <td width="100">
-                <a href="/product/category/form/{{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
-                <a href="#" data-id="{{ $row->id }}" class="btn btn-danger btn-sm btn-icon btnDelete"><i class="fas fa-trash"></i></a>
+                @if (permission(auth()->user(),'product_category','edit'))
+                  <a href="/product/category/form/{{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
+                @endif
+                @if (permission(auth()->user(),'product_category','delete'))
+                  <a href="#" data-id="{{ $row->id }}" class="btn btn-danger btn-sm btn-icon btnDelete"><i class="fas fa-trash"></i></a>
+                @endif
               </td>
             </tr>
           @endforeach
@@ -39,34 +45,36 @@
   </div>
 </div>
 
-<div class="modal fade" id="mdlDelete" tabindex="-1" aria-labelledby="mdlDeleteLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="mdlDeleteLabel">Select new Category</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="/product/category/delete" method="get">
-          <input type="hidden" name="id" id="txtId">
-          <div class="form-group">
-            <label>Replace To <span class="text-danger">*</span></label>
-            <select name="replace" class="form-control">
-              @foreach ($data as $category)
-                <option value="{{ $category->id }}">{{ $category->category }}</option>
-              @endforeach
-            </select>
-          </div>
-          <div class="text-right">
-            <button class="btn btn-primary"><i class="fas fa-save"></i> Submit</button>
-          </div>
-        </form>
+@if (permission(auth()->user(),'product_category','delete'))
+  <div class="modal fade" id="mdlDelete" tabindex="-1" aria-labelledby="mdlDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mdlDeleteLabel">Select new Category</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/product/category/delete" method="get">
+            <input type="hidden" name="id" id="txtId">
+            <div class="form-group">
+              <label>Replace To <span class="text-danger">*</span></label>
+              <select name="replace" class="form-control">
+                @foreach ($data as $category)
+                  <option value="{{ $category->id }}">{{ $category->category }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="text-right">
+              <button class="btn btn-primary"><i class="fas fa-save"></i> Submit</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
+@endif
 
 <script>
   $(function(){
