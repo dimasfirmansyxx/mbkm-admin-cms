@@ -6,7 +6,9 @@
 <div class="card shadow">
   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
     <h6 class="m-0 font-weight-bold text-primary">User List</h6>
-    <a href="/authorization/user/form" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+    @if (permission(auth()->user(),'user','add'))
+      <a href="/authorization/user/form" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+    @endif
   </div>
   <div class="card-body">
     <table class="table table-bordered table-hover table-striped">
@@ -26,8 +28,12 @@
               <td>{{ $row->username }}</td>
               <td>{{ $row->role->name }}</td>
               <td width="100">
-                <a href="/authorization/user/form/{{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
-                <a href="/authorization/user/delete?id={{ $row->id }}" onclick="return confirm('Are you sure want to delete this category?')" class="btn btn-danger btn-sm btn-icon"><i class="fas fa-trash"></i></a>
+                @if (permission(auth()->user(),'user','edit'))
+                  <a href="/authorization/user/form/{{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
+                @endif
+                @if (permission(auth()->user(),'user','delete'))
+                  <a href="/authorization/user/delete?id={{ $row->id }}" onclick="return confirm('Are you sure want to delete this user?')" class="btn btn-danger btn-sm btn-icon"><i class="fas fa-trash"></i></a>
+                @endif
               </td>
             </tr>
           @endforeach
