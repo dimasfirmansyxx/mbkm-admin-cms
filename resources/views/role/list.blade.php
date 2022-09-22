@@ -6,7 +6,9 @@
 <div class="card shadow">
   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
     <h6 class="m-0 font-weight-bold text-primary">Role List</h6>
-    <a href="/authorization/role/form" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+    @if (permission(auth()->user(),'role','add'))
+      <a href="/authorization/role/form" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+    @endif
   </div>
   <div class="card-body">
     <table class="table table-bordered table-hover table-striped">
@@ -24,8 +26,12 @@
               <td class="text-center">{{ $loop->iteration }}</td>
               <td>{{ $row->name }}</td>
               <td width="100">
-                <a href="/authorization/role/form/{{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
-                <a href="#" data-id="{{ $row->id }}" class="btn btn-danger btn-sm btn-icon btnDelete"><i class="fas fa-trash"></i></a>
+                @if (permission(auth()->user(),'role','edit'))
+                  <a href="/authorization/role/form/{{ $row->id }}" class="btn btn-warning btn-sm btn-icon"><i class="fas fa-pen"></i></a>
+                @endif
+                @if (permission(auth()->user(),'role','delete'))
+                  <a href="#" data-id="{{ $row->id }}" class="btn btn-danger btn-sm btn-icon btnDelete"><i class="fas fa-trash"></i></a>
+                @endif
               </td>
             </tr>
           @endforeach
