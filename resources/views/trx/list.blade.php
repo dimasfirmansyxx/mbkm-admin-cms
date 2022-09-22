@@ -6,7 +6,9 @@
 <div class="card shadow">
   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
     <h6 class="m-0 font-weight-bold text-primary">Transactions List</h6>
-    <a href="/trx/create" class="btn btn-primary btn-sm"><i class="fas fa-cash-register"></i> Create Transaction</a>
+    @if (permission(auth()->user(),'transaction','add'))
+      <a href="/trx/create" class="btn btn-primary btn-sm"><i class="fas fa-cash-register"></i> Create Transaction</a>
+    @endif
   </div>
   <div class="card-body">
     <form action="" method="get" class="row">
@@ -71,11 +73,15 @@
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">
                     @if ($row->status == 1)
-                      <a class="dropdown-item" href="/trx/update/{{ $row->id }}"><i class="fas fa-pen"></i> Edit</a>
-                      <a class="dropdown-item" onclick="return confirm('Are you sure want to confirm this transaction as PAID ?')" href="/trx/paid?id={{$row->id}}"><i class="fas fa-check-circle"></i> Set PAID</a>
-                      <a class="dropdown-item" onclick="return confirm('Are you sure want to cancel this transaction ?')" href="/trx/cancel?id={{$row->id}}"><i class="fas fa-times-circle"></i> Cancel</a>
+                      @if (permission(auth()->user(),'transaction','edit'))
+                        <a class="dropdown-item" href="/trx/update/{{ $row->id }}"><i class="fas fa-pen"></i> Edit</a>
+                        <a class="dropdown-item" onclick="return confirm('Are you sure want to confirm this transaction as PAID ?')" href="/trx/paid?id={{$row->id}}"><i class="fas fa-check-circle"></i> Set PAID</a>
+                        <a class="dropdown-item" onclick="return confirm('Are you sure want to cancel this transaction ?')" href="/trx/cancel?id={{$row->id}}"><i class="fas fa-times-circle"></i> Cancel</a>
+                      @endif
                     @elseif ($row->status == 0)
-                      <a class="dropdown-item" onclick="return confirm('Are you sure want to delete this transaction ?')" href="/trx/delete?id={{$row->id}}"><i class="fas fa-trash"></i> Delete</a>
+                      @if (permission(auth()->user(),'transaction','delete'))
+                        <a class="dropdown-item" onclick="return confirm('Are you sure want to delete this transaction ?')" href="/trx/delete?id={{$row->id}}"><i class="fas fa-trash"></i> Delete</a>
+                      @endif
                     @endif
                   </div>
                 </div>
